@@ -15,7 +15,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function Library() {
-  const { textbooks, addTextbook, deleteTextbook, isDriveConnected, connectDrive, logoutDrive } = useLibrary();
+  const { textbooks, addTextbook, deleteTextbook } = useLibrary();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
@@ -33,29 +33,12 @@ export default function Library() {
           <h1 className="text-4xl font-black text-zinc-900 dark:text-white mb-2">Thư viện Giáo trình</h1>
           <p className="text-zinc-500">Quản lý và truy cập các tài liệu học tập chuyên ngành.</p>
         </div>
-        <div className="flex gap-3">
-          {!isDriveConnected ? (
-            <button
-              onClick={connectDrive}
-              className="flex items-center gap-2 px-6 py-3 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 rounded-2xl font-bold hover:bg-zinc-50 transition-all shadow-sm"
-            >
-              <Upload className="w-5 h-5 text-blue-500" /> Kết nối Google Drive
-            </button>
-          ) : (
-            <button
-              onClick={logoutDrive}
-              className="flex items-center gap-2 px-6 py-3 bg-red-50 text-red-600 rounded-2xl font-bold hover:bg-red-100 transition-all"
-            >
-              <X className="w-5 h-5" /> Ngắt kết nối Drive
-            </button>
-          )}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-2xl font-bold hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-500/20"
-          >
-            <Plus className="w-5 h-5" /> Thêm giáo trình
-          </button>
-        </div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-2xl font-bold hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-500/20"
+        >
+          <Plus className="w-5 h-5" /> Thêm giáo trình
+        </button>
       </div>
 
       <div className="flex flex-col md:flex-row gap-4">
@@ -93,13 +76,8 @@ export default function Library() {
               className="group bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 hover:border-emerald-500 transition-all hover:shadow-xl"
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl text-emerald-600 relative">
+                <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl text-emerald-600">
                   <FileText className="w-8 h-8" />
-                  {textbook.isDrive && (
-                    <div className="absolute -bottom-1 -right-1 bg-blue-500 text-white p-1 rounded-full border-2 border-white dark:border-zinc-900">
-                      <Upload className="w-2 h-2" />
-                    </div>
-                  )}
                 </div>
                 <button
                   onClick={() => deleteTextbook(textbook.id)}
@@ -170,8 +148,7 @@ function AddTextbookModal({ isOpen, onClose, onAdd }) {
       category,
       fileName: file.name,
       fileSize: (file.size / (1024 * 1024)).toFixed(1) + ' MB',
-      url: URL.createObjectURL(file),
-      file: file // Pass the actual file for Drive upload
+      url: URL.createObjectURL(file)
     });
 
     setTitle('');
